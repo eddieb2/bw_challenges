@@ -1,20 +1,21 @@
 class Stack:
     def __init__(self):
         self.storage = []
-    
+
     def __len__(self):
         return len(self.storage)
-    
+
     def push(self, x):
         return self.storage.append(x)
-    
+
     def pop(self):
         if len(self.storage) != 0:
             return self.storage.pop()
-    
+
     def print_s(self):
         print(self.storage)
-    
+
+
 class MyQueue:
 
     def __init__(self):
@@ -23,25 +24,31 @@ class MyQueue:
         """
         self.s1 = Stack()
         self.s2 = Stack()
-        
+
     def push(self, x: int) -> None:
         """
         Push element x to the back of queue.
         """
         self.s1.push(x)
-        
+
     def pop(self) -> int:
         """
         Removes the element from in front of queue and returns that element.
         """
-        # store pop value in s2 from s1 until length of s1 == 1, then pop and return last value in s1
-        while(self.s1.__len__() > 1):
+        # NOTES:
+        # Pop all items off of s1 until we reach the first element,
+        # push all popped elements from s1 to s2,
+        # store and remove the first element
+        # pop all items off s2 and push them to s1, giving us the original stack
+        # return removed element
+
+        while (self.s1.__len__() > 1):
             # self.s2.print_s()
             self.s2.push(self.s1.pop())
-            
+
         removed = self.s1.pop()
 
-        while(self.s2.__len__() != 0):
+        while (self.s2.__len__() != 0):
             # self.s1.print_s()
             self.s1.push(self.s2.pop())
 
@@ -51,15 +58,23 @@ class MyQueue:
         """
         Get the front element.
         """
+        # NOTES:
+        # Pop all items off of s1 until we reach the first element,
+        # push all popped elements from s1 to s2,
+        # store element to print,
+        # pop all items off s2 and push them to s1, giving us the original stack
+        # return element to print
         while (self.s1.__len__() > 1):
-            # self.s2.print_s()
+            # self.s2.print_s(
             self.s2.push(self.s1.pop())
 
-        return self.s1.storage[0]
+        first_element = self.s1.storage[0]
 
         while (self.s2.__len__() != 0):
             # self.s1.print_s()
             self.s1.push(self.s2.pop())
+
+        return first_element
 
     def empty(self) -> bool:
         """
@@ -69,19 +84,3 @@ class MyQueue:
             return True
         else:
             return False
-
-
-# Your MyQueue object will be instantiated and called as such:
-obj = MyQueue()
-obj.push(1)
-obj.push(2)
-obj.push(3)
-obj.push(4)
-obj.peek()
-print(obj.empty())
-obj.s1.print_s()
-
-
-# param_2 = obj.pop()
-# param_3 = obj.peek()
-# param_4 = obj.empty()
